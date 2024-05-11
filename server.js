@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+const logger = require('logger')
 const userrouter = require('./Routes/userrouter.js');
 const cookieParser = require('cookie-parser');
+const errorHandler = require('./Middleware/error.middleware.js')
 
 // LOAD ENVIRONMENT VARIABLES FROM .ENV FILE
 dotenv.config();
@@ -18,7 +20,7 @@ app.use(bodyParser.json());
 
 // LOGGER MIDDLEWARE
 app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.url}`);
+  console.log(`${req.method} ${req.url}`);
   next();
 });
 app.use (cookieParser())
@@ -28,10 +30,10 @@ app.use('api/v1/users', userrouter)
 
 app.use(errorHandler);
 
-app.listen(3000)
+app.listen(3001)
 
 // STARTING THE SERVER
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  logger.info(`Server listening on port ${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });

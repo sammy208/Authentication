@@ -1,14 +1,13 @@
 const express = require ("express")
-const {validateSignupInput, validateLoginInput } = require ("../utils/userutils.js")
 const {saveuser, findUserByEmail} = require("../service/userService.js")
 const {comparepassword} = require ("../config/bcryptConfig.js")
 const jwt = require ("jsonwebtoken")
 const crypto = require ("crypto")
-const User = require("./models/user.model");
-const sendEmail = require("./utils/email");
+const User = require("../models/user.js");
+const sendEmail = require("../utils/email");
 
 
-export const signup = async(req,res) =>{
+const signup = async(req,res) =>{
     try{
      const {email,password}=req.body
      const inputValidation=  validateSignupInput(email,password)
@@ -32,7 +31,7 @@ export const signup = async(req,res) =>{
         res.status(500).json({message: "Internal server error", error: error});
      }
 }
-export const login = async(req, res) =>{
+ const login = async(req, res) =>{
     try{
        const {email,password}=req.body
        const inputValidation=  validateLoginInput({email,password})
@@ -52,7 +51,7 @@ export const login = async(req, res) =>{
        res.status(500).json({message: "Internal server error", error: error});
     }
  }
-export const forgotPassword = async (req, res, next) => {
+const forgotPassword = async (req, res, next) => {
    // 1. Get user based on email address posted
    const user = await User.findOne({ email: req.body.email });
    // check if user exists
@@ -93,7 +92,7 @@ export const forgotPassword = async (req, res, next) => {
  
  // writing functionality for "reset password" - when user clicks on the reset link sent to their mail
  
-export const resetPassword = async (req, res, next) => {
+const resetPassword = async (req, res, next) => {
    // encrypt the "plain token" passed in the request url
      const token = crypto.createHash('sha256').update(req.params.token).digest('hex');
     // Get user whose passwordResetToken matches encrypted req.params.token and the token hasn't expired
@@ -104,4 +103,4 @@ export const resetPassword = async (req, res, next) => {
     }
  }
  
- module.exports = {forgotPassword, resetPassword}
+ module.exports = {forgotPassword, resetPassword, signup, login}

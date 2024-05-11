@@ -22,7 +22,7 @@ const user = new mongoose.Schema({
   passwordResetTokenExpires: Date
 });
 
-userSchema.methods.createResetPasswordToken = function(){
+user.methods.createResetPasswordToken = function(){
     const resetToken = crypto.randomBytes(32).toString('hex');
     // encrypt reset token and store in db(for security purposes)
     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
@@ -32,4 +32,5 @@ userSchema.methods.createResetPasswordToken = function(){
     return resetToken
   }
 const User = mongoose.model ("User", user);
-export default User;
+
+module.exports= User 
