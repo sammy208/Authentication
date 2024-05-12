@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const logger = require('logger')
+// const logger = require('logger')
 const userrouter = require('./Routes/userrouter.js');
 const cookieParser = require('cookie-parser');
 const errorHandler = require('./Middleware/error.middleware.js')
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 app.use (cookieParser())
 
-app.use('api/v1/users', userrouter)
+app.use('/api/v1/users', userrouter)
 
 
 app.use(errorHandler);
